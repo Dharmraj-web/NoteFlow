@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ "Create account" if mode == "register" else "Sign in" }} — NoteFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <a class="brand auth-brand" href="/"><span class="brand-mark">n</span><span>NoteFlow<span class="brand-period">.</span></span></a>
+    <p class="eyebrow">YOUR PERSONAL SPACE</p>
+    <h1>{{ "Create your account" if mode == "register" else "Welcome back" }}<span class="heading-dot">.</span></h1>
+    <p class="auth-subtitle">{{ "A home for every thought. Sign up to get started." if mode == "register" else "Sign in to pick up where your thoughts left off." }}</p>
+    <form method="POST" class="auth-form">
+      {{ form.hidden_tag() }}
+      {% if mode == "register" %}
+        <label for="name">FULL NAME</label>{{ form.name(id="name", placeholder="Your name", autocomplete="name") }}
+        {% for error in form.name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      {% endif %}
+      <label for="email">EMAIL ADDRESS</label>{{ form.email(id="email", placeholder="you@example.com", autocomplete="email") }}
+      {% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      <label for="password">PASSWORD</label>{{ form.password(id="password", placeholder="At least 8 characters", autocomplete="new-password" if mode == "register" else "current-password") }}
+      {% for error in form.password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      {% if mode == "register" %}
+        <label for="confirm_password">CONFIRM PASSWORD</label>{{ form.confirm_password(id="confirm_password", placeholder="Enter your password again", autocomplete="new-password") }}
+        {% for error in form.confirm_password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      {% endif %}
+      <button class="btn-primary auth-submit" type="submit">{{ "Create account" if mode == "register" else "Sign in" }} <span>→</span></button>
+    </form>
+    <p class="auth-switch">{% if mode == "register" %}Already have an account? <a href="{{ url_for('login') }}">Sign in</a>{% else %}New to NoteFlow? <a href="{{ url_for('register') }}">Create an account</a>{% endif %}</p>
+    <p class="auth-foot">Your notes belong to your account.</p>
+  </main>
+</body>
+</html>
